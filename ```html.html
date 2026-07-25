@@ -1,0 +1,555 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raw Web Engineering & Design | Custom PHP & Responsive Systems</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Space Grotesk & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,400&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#F9F8F3',
+                        paper: '#FFFDF9',
+                        ink: '#121316',
+                        accent: '#FF5436', // Creative Vermilion
+                        softLemon: '#E2F0D9',
+                        mint: '#B4E1D2',
+                        lavender: '#E3D7FF',
+                        borderBold: '#121316'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        'neo': '4px 4px 0px #121316',
+                        'neo-lg': '8px 8px 0px #121316',
+                        'neo-xl': '12px 12px 0px #121316',
+                        'neo-sm': '2px 2px 0px #121316'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and unique micro-styles */
+        ::selection {
+            background-color: #FF5436;
+            color: #FFFDF9;
+        }
+        body {
+            background-color: #F9F8F3;
+            color: #121316;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: radial-gradient(#121316 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            background-color: #F9F8F3;
+        }
+        .neo-card {
+            background: #FFFDF9;
+            border: 2.5px solid #121316;
+            box-shadow: 6px 6px 0px #121316;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .neo-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 10px 10px 0px #121316;
+        }
+        .neo-btn {
+            border: 2.5px solid #121316;
+            box-shadow: 4px 4px 0px #121316;
+            transition: all 0.15s ease;
+        }
+        .neo-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #121316;
+        }
+        .neo-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #121316;
+        }
+        .rotated-badge {
+            transform: rotate(-3deg);
+        }
+        /* Custom Loader Animation */
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+        }
+        .dot-pulse {
+            animation: pulseDot 1.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Top Announcement Bar (Human, Fresh feel) -->
+    <div class="bg-mint border-b-2 border-ink py-2 px-4 text-xs md:text-sm font-mono flex justify-between items-center overflow-hidden">
+        <div class="flex items-center gap-2 animate-pulse whitespace-nowrap">
+            <span class="w-2.5 h-2.5 rounded-full bg-accent inline-block border border-ink"></span>
+            <span class="font-bold">AVAILABLE FOR FREELANCE & CUSTOM CONTRACTS</span> 
+            <span class="hidden md:inline text-gray-700">— Fast delivery, zero bloated frameworks, 100% tailored.</span>
+        </div>
+        <div class="font-bold hidden sm:block">
+            <span>Core Stack: PHP 8.x + MySQL + Pure CSS</span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-4 z-50 px-4 md:px-12 max-w-7xl mx-auto w-full my-4">
+        <nav class="bg-paper border-2 border-ink p-3 md:p-4 rounded-2xl shadow-neo flex justify-between items-center">
+            <a href="#" class="font-display font-bold text-xl md:text-2xl tracking-tight flex items-center gap-2 group">
+                <span class="bg-accent text-paper px-3 py-1 rounded-lg border-2 border-ink group-hover:rotate-6 transition-transform">RAW</span>
+                <span class="underline decoration-wavy decoration-accent">DEV.LAB</span>
+            </a>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center gap-6 font-display font-bold text-sm">
+                <a href="#work" class="hover:text-accent transition-colors">WHAT I BUILD</a>
+                <a href="#demo-tester" class="hover:text-accent transition-colors">RESPONSIVE LAB</a>
+                <a href="#php-stack" class="hover:text-accent transition-colors">BACKEND SPEED</a>
+                <a href="#estimator" class="hover:text-accent transition-colors">ESTIMATOR</a>
+            </div>
+
+            <!-- Call To Action -->
+            <a href="#contact" class="neo-btn bg-accent text-paper font-display font-bold px-4 py-2 text-sm rounded-xl flex items-center gap-2">
+                <span>START A PROJECT</span>
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Hero Section: Organic, Anti-AI Human Design -->
+    <main class="max-w-7xl mx-auto px-4 md:px-12 pt-8 pb-16 flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center gap-2 bg-lavender border-2 border-ink px-4 py-1.5 rounded-full font-mono text-xs md:text-sm font-semibold shadow-neo-sm">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-accent"></i>
+                    <span>No AI-Generated Templates. Handmade Web Engineering.</span>
+                </div>
+
+                <h1 class="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl leading-[1.05] tracking-tight">
+                    Clean Code. <br>
+                    <span class="bg-softLemon px-3 py-1 border-2 border-ink inline-block my-1 rounded-xl shadow-neo-sm rotated-badge">Fast Backend.</span> <br>
+                    Zero Bloatware.
+                </h1>
+
+                <p class="text-base md:text-lg text-gray-800 font-sans leading-relaxed max-w-xl">
+                    I build lightning-fast web applications, admin portals, and dynamic databases using <span class="font-bold underline decoration-accent">PHP 8</span>, <span class="font-bold underline decoration-accent">MySQL</span>, and mobile-first responsive design. Designed for humans, tailored for real business performance.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                    <a href="#contact" class="neo-btn bg-ink text-paper font-display font-bold px-6 py-3.5 text-base rounded-xl flex items-center gap-3">
+                        <i data-lucide="message-square" class="w-5 h-5 text-accent"></i>
+                        <span>Discuss Your Project</span>
+                    </a>
+                    <a href="#work" class="neo-btn bg-paper text-ink font-display font-bold px-6 py-3.5 text-base rounded-xl flex items-center gap-2">
+                        <i data-lucide="eye" class="w-5 h-5"></i>
+                        <span>Explore Working Demos</span>
+                    </a>
+                </div>
+
+                <!-- Live Metrics Badge -->
+                <div class="pt-6 grid grid-cols-3 gap-4 max-w-lg border-t-2 border-ink/20 font-mono text-xs md:text-sm">
+                    <div>
+                        <div class="font-bold text-xl md:text-2xl font-display text-accent">&lt; 50ms</div>
+                        <div class="text-gray-600">Avg PHP Exec Time</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-xl md:text-2xl font-display text-ink">100%</div>
+                        <div class="text-gray-600">Responsive Layouts</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-xl md:text-2xl font-display text-ink">0</div>
+                        <div class="text-gray-600">Unnecessary Frameworks</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Interactive Graphic / Visual Card -->
+            <div class="lg:col-span-5">
+                <div class="neo-card p-6 rounded-3xl bg-paper relative overflow-hidden">
+                    <!-- Top Window Bar -->
+                    <div class="flex items-center justify-between pb-4 border-b-2 border-ink mb-4">
+                        <div class="flex gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-accent border border-ink inline-block"></span>
+                            <span class="w-3.5 h-3.5 rounded-full bg-yellow-400 border border-ink inline-block"></span>
+                            <span class="w-3.5 h-3.5 rounded-full bg-mint border border-ink inline-block"></span>
+                        </div>
+                        <span class="font-mono text-xs font-bold text-gray-500">app_preview.php</span>
+                    </div>
+
+                    <!-- Code / Visual Box -->
+                    <div class="bg-ink text-paper p-4 rounded-xl font-mono text-xs space-y-2 border border-ink overflow-x-auto">
+                        <div class="text-gray-500">// Pure PHP + MySQL Execution Stack</div>
+                        <div><span class="text-accent">&lt;?php</span></div>
+                        <div class="pl-4"><span class="text-mint">$db</span> = new mysqli(<span class="text-yellow-300">'localhost'</span>, <span class="text-yellow-300">'app_user'</span>, <span class="text-yellow-300">'pass'</span>, <span class="text-yellow-300">'data'</span>);</div>
+                        <div class="pl-4"><span class="text-lavender">$query</span> = <span class="text-yellow-300">"SELECT * FROM items WHERE status = 'active'"</span>;</div>
+                        <div class="pl-4"><span class="text-mint">$result</span> = <span class="text-mint">$db</span>-&gt;query(<span class="text-lavender">$query</span>);</div>
+                        <div class="pl-4"><span class="text-gray-400">echo</span> json_encode(<span class="text-mint">$result</span>-&gt;fetch_all(MYSQLI_ASSOC));</div>
+                        <div><span class="text-accent">?&gt;</span></div>
+                    </div>
+
+                    <!-- Visual Output simulation -->
+                    <div class="mt-4 p-4 bg-softLemon border-2 border-ink rounded-xl space-y-2">
+                        <div class="flex justify-between items-center font-mono text-xs font-bold">
+                            <span>LIVE QUERY RESULT</span>
+                            <span class="text-accent font-bold">200 OK</span>
+                        </div>
+                        <div class="bg-paper p-2 border border-ink rounded text-xs flex justify-between items-center">
+                            <span class="font-bold">✓ Custom Admin Panel</span>
+                            <span class="bg-mint border border-ink px-2 py-0.5 rounded text-[10px] font-mono">Mobile-Ready</span>
+                        </div>
+                        <div class="bg-paper p-2 border border-ink rounded text-xs flex justify-between items-center">
+                            <span class="font-bold">✓ SQL Injection Safe</span>
+                            <span class="bg-lavender border border-ink px-2 py-0.5 rounded text-[10px] font-mono">Prepared Stmts</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <span class="font-mono text-xs font-semibold text-gray-600">⚡ Handcrafted line-by-line for ultimate speed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: INTERACTIVE RESPONSIVE TESTER (Proves your CSS/Responsive skills) -->
+        <section id="demo-tester" class="mt-24 pt-8">
+            <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
+                <span class="bg-lavender border-2 border-ink px-4 py-1 rounded-full font-mono text-xs font-bold uppercase shadow-neo-sm">Interactive Live Playground</span>
+                <h2 class="font-display text-3xl md:text-5xl font-extrabold tracking-tight">Test My Responsive Layouts Live</h2>
+                <p class="text-gray-700 text-sm md:text-base">Click the viewport buttons below to test how the mock dashboard layout smoothly reorganizes itself between Mobile, Tablet, and Desktop screen widths.</p>
+            </div>
+
+            <!-- Responsive Frame Simulator Container -->
+            <div class="neo-card p-4 md:p-6 rounded-3xl bg-paper">
+                <!-- Frame Control Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b-2 border-ink">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-xs font-bold uppercase">Device Viewport:</span>
+                        <span id="current-viewport-label" class="bg-softLemon border border-ink px-2 py-1 rounded text-xs font-mono font-bold">Desktop (100%)</span>
+                    </div>
+
+                    <!-- Viewport Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="setViewport('mobile')" class="neo-btn bg-paper hover:bg-mint px-3 py-1.5 rounded-lg font-mono text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="smartphone" class="w-4 h-4"></i> Mobile (375px)
+                        </button>
+                        <button onclick="setViewport('tablet')" class="neo-btn bg-paper hover:bg-lavender px-3 py-1.5 rounded-lg font-mono text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="tablet" class="w-4 h-4"></i> Tablet (768px)
+                        </button>
+                        <button onclick="setViewport('desktop')" class="neo-btn bg-softLemon px-3 py-1.5 rounded-lg font-mono text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="monitor" class="w-4 h-4"></i> Desktop (Full)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulated Browser Viewport -->
+                <div class="py-6 flex justify-center bg-cream/50 rounded-2xl border-2 border-dashed border-ink/30 min-h-[420px] transition-all duration-300">
+                    <div id="simulator-frame" class="w-full transition-all duration-500 ease-in-out border-2 border-ink rounded-2xl bg-paper p-4 shadow-neo-sm overflow-hidden">
+                        
+                        <!-- Simulated App Navbar -->
+                        <div class="flex justify-between items-center pb-3 border-b border-ink/20">
+                            <div class="flex items-center gap-2 font-display font-bold text-sm">
+                                <div class="w-3 h-3 bg-accent rounded-full border border-ink"></div>
+                                <span>PHP Inventory Portal</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-mint border border-ink text-[10px] font-mono px-2 py-0.5 rounded">User: Admin</span>
+                                <i data-lucide="menu" class="w-4 h-4 md:hidden"></i>
+                            </div>
+                        </div>
+
+                        <!-- Simulated App Grid -->
+                        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            <div class="p-3 border border-ink rounded-xl bg-softLemon">
+                                <div class="text-[10px] font-mono text-gray-600">Total Sales Today</div>
+                                <div class="text-lg font-bold font-display">$1,280.00</div>
+                            </div>
+                            <div class="p-3 border border-ink rounded-xl bg-lavender">
+                                <div class="text-[10px] font-mono text-gray-600">MySQL DB Query Time</div>
+                                <div class="text-lg font-bold font-display">0.004s</div>
+                            </div>
+                            <div class="p-3 border border-ink rounded-xl bg-mint sm:col-span-2 md:col-span-1">
+                                <div class="text-[10px] font-mono text-gray-600">Active Sessions</div>
+                                <div class="text-lg font-bold font-display">42 Users</div>
+                            </div>
+                        </div>
+
+                        <!-- Simulated Data Table -->
+                        <div class="mt-4 border border-ink rounded-xl overflow-x-auto bg-paper">
+                            <table class="w-full text-left font-mono text-xs">
+                                <thead class="bg-ink text-paper">
+                                    <tr>
+                                        <th class="p-2">ID</th>
+                                        <th class="p-2">Project</th>
+                                        <th class="p-2">Status</th>
+                                        <th class="p-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-ink/10">
+                                        <td class="p-2 font-bold">#102</td>
+                                        <td class="p-2">Custom PHP API</td>
+                                        <td class="p-2"><span class="bg-mint px-1.5 py-0.5 border border-ink rounded text-[10px]">Active</span></td>
+                                        <td class="p-2"><button class="underline font-bold">Edit</button></td>
+                                    </tr>
+                                    <tr class="border-b border-ink/10">
+                                        <td class="p-2 font-bold">#103</td>
+                                        <td class="p-2">Responsive Store UI</td>
+                                        <td class="p-2"><span class="bg-softLemon px-1.5 py-0.5 border border-ink rounded text-[10px]">Done</span></td>
+                                        <td class="p-2"><button class="underline font-bold">Edit</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: WHAT I CAN BUILD FOR YOU (Services & Solutions) -->
+        <section id="work" class="mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div class="space-y-2">
+                    <span class="bg-mint border-2 border-ink px-4 py-1 rounded-full font-mono text-xs font-bold uppercase shadow-neo-sm">Real Solutions</span>
+                    <h2 class="font-display text-3xl md:text-5xl font-extrabold">What I Can Build For You</h2>
+                </div>
+                <p class="text-gray-700 max-w-md text-sm">Every project comes with full source code (ZIP), structured SQL database files, and straightforward deployment steps.</p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Card 1 -->
+                <div class="neo-card p-6 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-accent rounded-2xl border-2 border-ink flex items-center justify-center text-paper shadow-neo-sm">
+                            <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl">Custom Admin Dashboards</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            Need a custom panel to manage users, track orders, or edit content? I build secure PHP admin portals with full MySQL CRUD capabilities and clean controls.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-ink/10 flex flex-wrap gap-2">
+                        <span class="bg-cream border border-ink text-[11px] font-mono px-2 py-1 rounded-md">PHP 8</span>
+                        <span class="bg-cream border border-ink text-[11px] font-mono px-2 py-1 rounded-md">MySQL</span>
+                        <span class="bg-cream border border-ink text-[11px] font-mono px-2 py-1 rounded-md">Sessions</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="neo-card p-6 rounded-3xl flex flex-col justify-between bg-softLemon/40">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-ink rounded-2xl border-2 border-ink flex items-center justify-center text-paper shadow-neo-sm">
+                            <i data-lucide="smartphone" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl">Mobile-First Frontends</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            Handcrafted HTML5 & CSS layouts that adapt flawlessly to every device screen—from small smartphones to wide 4K desktop monitors.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-ink/10 flex flex-wrap gap-2">
+                        <span class="bg-paper border border-ink text-[11px] font-mono px-2 py-1 rounded-md">Responsive</span>
+                        <span class="bg-paper border border-ink text-[11px] font-mono px-2 py-1 rounded-md">Flexbox/Grid</span>
+                        <span class="bg-paper border border-ink text-[11px] font-mono px-2 py-1 rounded-md">Vanilla JS</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="neo-card p-6 rounded-3xl flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-lavender rounded-2xl border-2 border-ink flex items-center justify-center text-ink shadow-neo-sm">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl">Database Architecture</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            Well-structured MySQL relational schemas, normalized tables, efficient query optimization, and secure PDO/MySQLi prepared statements to prevent security flaws.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-ink/10 flex flex-wrap gap-2">
+                        <span class="bg-cream border border-ink text-[11px] font-mono px-2 py-1 rounded-md">Relational DB</span>
+                        <span class="bg-cream border border-ink text-[11px] font-mono px-2 py-1 rounded-md">Prepared Stmts</span>
+                        <span class="bg-cream border border-ink text-[11px] font-mono px-2 py-1 rounded-md">SQL Export</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: COST ESTIMATOR (Interactive tool to get DMs) -->
+        <section id="estimator" class="mt-24">
+            <div class="neo-card p-6 md:p-10 rounded-3xl bg-paper relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="lg:col-span-6 space-y-4">
+                        <span class="bg-yellow-300 border-2 border-ink px-4 py-1 rounded-full font-mono text-xs font-bold uppercase shadow-neo-sm">Instant Transparent Quote</span>
+                        <h2 class="font-display text-3xl md:text-4xl font-extrabold">Project Cost Estimator</h2>
+                        <p class="text-gray-700 text-sm leading-relaxed">
+                            Select the features you need for your web app to get an instant estimated price and timeframe. Send this straight to my DM to kickstart your order!
+                        </p>
+
+                        <!-- Interactive Checkboxes -->
+                        <div class="space-y-3 pt-2 font-mono text-sm">
+                            <label class="flex items-center gap-3 p-3 border-2 border-ink rounded-xl bg-cream cursor-pointer hover:bg-softLemon transition-colors">
+                                <input type="checkbox" checked disabled class="w-4 h-4 accent-accent border-2 border-ink">
+                                <span>Responsive HTML/CSS Design (Base) — <strong>$50</strong></span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 border-2 border-ink rounded-xl bg-cream cursor-pointer hover:bg-softLemon transition-colors">
+                                <input type="checkbox" id="opt-php" onchange="calculateEstimate()" class="w-4 h-4 accent-accent border-2 border-ink">
+                                <span>PHP Dynamic Logic & Forms (+$40)</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 border-2 border-ink rounded-xl bg-cream cursor-pointer hover:bg-softLemon transition-colors">
+                                <input type="checkbox" id="opt-mysql" onchange="calculateEstimate()" class="w-4 h-4 accent-accent border-2 border-ink">
+                                <span>MySQL Database & User Auth (+$50)</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 border-2 border-ink rounded-xl bg-cream cursor-pointer hover:bg-softLemon transition-colors">
+                                <input type="checkbox" id="opt-admin" onchange="calculateEstimate()" class="w-4 h-4 accent-accent border-2 border-ink">
+                                <span>Custom Admin Management Panel (+$60)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Output Price Box -->
+                    <div class="lg:col-span-6">
+                        <div class="bg-ink text-paper p-8 rounded-3xl border-2 border-ink shadow-neo-lg text-center space-y-6">
+                            <span class="font-mono text-xs text-gray-400 uppercase tracking-widest">Estimated Total</span>
+                            <div id="total-price" class="font-display text-5xl md:text-6xl font-extrabold text-accent">$50</div>
+                            <div id="total-time" class="font-mono text-xs bg-paper/10 py-2 px-4 rounded-xl text-mint inline-block">Estimated Delivery: 1 - 2 Days</div>
+                            
+                            <p class="text-xs text-gray-300 font-sans">Includes full source code (.ZIP), SQL database export, and deployment guide.</p>
+
+                            <button onclick="copyQuoteToClipboard()" class="w-full neo-btn bg-accent text-paper font-display font-bold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                                <span id="copy-btn-text">Copy Estimate for Reddit/Discord DM</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: CONTACT & DM CTA -->
+        <section id="contact" class="mt-24 text-center max-w-3xl mx-auto space-y-6">
+            <div class="inline-block bg-accent text-paper font-mono text-xs font-bold px-4 py-1.5 rounded-full border-2 border-ink rotated-badge">
+                READY TO WORK TOGETHER?
+            </div>
+            <h2 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight">Let's Build Something Fast.</h2>
+            <p class="text-gray-700 text-base md:text-lg">Send me a direct message on Reddit or Discord with your project details. I respond within hours.</p>
+
+            <div class="flex flex-wrap justify-center gap-4 pt-4">
+                <a href="https://reddit.com" target="_blank" class="neo-btn bg-paper text-ink font-display font-bold px-6 py-3.5 rounded-xl flex items-center gap-2">
+                    <i data-lucide="message-square" class="w-5 h-5 text-accent"></i>
+                    <span>Message on Reddit</span>
+                </a>
+                <a href="#" onclick="alert('My Discord Username: web_dev_raw (Feel free to add me!)'); return false;" class="neo-btn bg-lavender text-ink font-display font-bold px-6 py-3.5 rounded-xl flex items-center gap-2">
+                    <i data-lucide="hash" class="w-5 h-5 text-ink"></i>
+                    <span>Discord: web_dev_raw</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t-2 border-ink bg-paper py-8 px-4 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 font-mono text-xs text-gray-600">
+            <div>© 2026 Raw Dev Lab. Handcrafted without bloated frameworks.</div>
+            <div class="flex items-center gap-4">
+                <span class="hover:underline cursor-pointer">PHP 8.x</span>
+                <span>•</span>
+                <span class="hover:underline cursor-pointer">MySQL</span>
+                <span>•</span>
+                <span class="hover:underline cursor-pointer">Pure CSS</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Viewport Switcher Logic
+        function setViewport(device) {
+            const frame = document.getElementById('simulator-frame');
+            const label = document.getElementById('current-viewport-label');
+
+            if (device === 'mobile') {
+                frame.style.width = '375px';
+                label.innerText = 'Mobile View (375px)';
+                label.className = 'bg-mint border border-ink px-2 py-1 rounded text-xs font-mono font-bold';
+            } else if (device === 'tablet') {
+                frame.style.width = '640px';
+                label.innerText = 'Tablet View (640px)';
+                label.className = 'bg-lavender border border-ink px-2 py-1 rounded text-xs font-mono font-bold';
+            } else {
+                frame.style.width = '100%';
+                label.innerText = 'Desktop (Full 100%)';
+                label.className = 'bg-softLemon border border-ink px-2 py-1 rounded text-xs font-mono font-bold';
+            }
+        }
+
+        // Project Cost Calculator Logic
+        function calculateEstimate() {
+            let total = 50; // Base Responsive HTML/CSS
+            let days = 2;
+
+            if (document.getElementById('opt-php').checked) {
+                total += 40;
+                days += 1;
+            }
+            if (document.getElementById('opt-mysql').checked) {
+                total += 50;
+                days += 1;
+            }
+            if (document.getElementById('opt-admin').checked) {
+                total += 60;
+                days += 2;
+            }
+
+            document.getElementById('total-price').innerText = '$' + total;
+            document.getElementById('total-time').innerText = `Estimated Delivery: ${days - 1} - ${days} Days`;
+        }
+
+        // Copy Quote Text for DM
+        function copyQuoteToClipboard() {
+            const price = document.getElementById('total-price').innerText;
+            const textToCopy = `Hi! I calculated a project quote on your portfolio site (${price}). I need a custom website with these features. Let us discuss the details!`;
+            
+            // Clipboard fallback as specified
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.innerText = "Copied to Clipboard! ✓";
+            setTimeout(() => {
+                btnText.innerText = "Copy Estimate for Reddit/Discord DM";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+
+```
